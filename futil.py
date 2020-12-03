@@ -1,14 +1,16 @@
+#futil v1.0
+
 import os
 import glob
 import sys
 import argparse
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(usage="futil.py [-h] [-d] {rename, create, remove} ...")
 subparsers = parser.add_subparsers(help="functions", dest="command")
 
 parser.add_argument('-d','--directory', type=str, metavar='<directory>', help='specify a directory. Default is current working directory')
 parser.add_argument('-v', '--verbose', action='store_true', help='toggle verbose output')
-parser.add_argument('-V', '--version', action='version', version='futil 1.0', help='show program\'s version number and exit')
+parser.add_argument('-V', '--version', action='version', version='%(prog)s 1.0', help='show program\'s version number and exit')
 
 rename_parser = subparsers.add_parser("rename")
 rename_parser.add_argument("filetype", type=str)

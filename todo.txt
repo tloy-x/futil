@@ -1,0 +1,8 @@
+TODO:
+
+-monolithic help output
+-template files 
+-root protection
+-more errors 
+-syntax (unintuitive, very "developer-y")
+-code readability (i am bad at python)
