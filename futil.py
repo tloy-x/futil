@@ -11,19 +11,21 @@ subparsers = parser.add_subparsers(help="functions", dest="command")
 parser.add_argument('-d','--directory', type=str, metavar='<directory>', help='specify a directory. Default is current working directory')
 parser.add_argument('-v', '--verbose', action='store_true', help='toggle verbose output')
 parser.add_argument('-V', '--version', action='version', version='%(prog)s 1.0', help='show program\'s version number and exit')
+parser.add_argument('-a', "--aa", action="store_true") #monolithic help
 
-rename_parser = subparsers.add_parser("rename")
+rename_parser = subparsers.add_parser("rename", help="rename files", usage="futil.py [-d] rename filetype newname [-p]")
 rename_parser.add_argument("filetype", type=str)
 rename_parser.add_argument("newname", type=str)
-rename_parser.add_argument("-p", "--placeholder", type=int, metavar="<int>", help='set number of placeholder digits in filenumber. default is 4, maximum is 10')
+rename_parser.add_argument("-p", "--placeholder", type=int, metavar="<int>", help='number of placeholder digits. default is 4, maximum is 10')
 
-create_parser = subparsers.add_parser("create")
+create_parser = subparsers.add_parser("create", help="create files", usage="futil.py [-d] create [-t] filetype name amount")
 create_parser.add_argument("filetype", type=str)
 create_parser.add_argument("name", type=str)
 create_parser.add_argument("amount", type=int, help='number of files to create')
-create_parser.add_argument("-p", "--placeholder", type=int, metavar="<int>", help='set number of placeholder digits in filenumber. default is 4, maximum is 10')
+create_parser.add_argument("-p", "--placeholder", type=int, metavar="<int>", help='number of placeholder digits. default is 4, maximum is 10')
+create_parser.add_argument("-t", "--template", action="store_true", help="define a template file")
 
-remove_parser = subparsers.add_parser("remove")
+remove_parser = subparsers.add_parser("remove", help="remove files", usage="futil.py [-d] remove filetype")
 remove_parser.add_argument("filetype", type=str)
 
 if len(sys.argv) == 1:
@@ -32,7 +34,19 @@ if len(sys.argv) == 1:
 
 args = parser.parse_args()
 
-if args.filetype[0] == '.':
+if args.aa:
+    parser.print_help(sys.stdout)
+    subparsers_actions = [
+        action for action in parser._actions
+        if isinstance(action, argparse._SubParsersAction)]
+
+    for subparsers_action in subparsers_actions:
+        for choice, subparser in subparsers_action.choices.items():
+            print('{}'.format(choice))
+            print(subparser.format_help())
+    exit(1)
+
+if args.filetype[0] == '.' and args.filetype is not None:
     args.filetype = args.filetype[1:]
 
 if args.directory is not None:
@@ -89,5 +103,3 @@ if args.command == 'remove':
         if args.verbose:
             print(f"Removing {file}...")
     print("Done.")
-
-#print(args)
