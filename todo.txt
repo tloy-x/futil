@@ -1,8 +1,7 @@
 TODO:
 
--monolithic help output
--template files 
--root protection
--more errors 
--syntax (unintuitive, very "developer-y")
+-monolithic help output [X] (didnt like it, removed)
+-template files  [X]
+-root protection [O]
+-syntax (unintuitive, very "developer-y") [O] (its fine)
 -code readability (i am bad at python)
