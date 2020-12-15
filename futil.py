@@ -13,20 +13,20 @@ parser.add_argument('-d','--directory', type=str, metavar='<directory>', help='s
 parser.add_argument('-v', '--verbose', action='store_true', help='toggle verbose output')
 parser.add_argument('-V', '--version', action='version', version='%(prog)s 1.0', help='show program\'s version number and exit')
 
-rename_parser = subparsers.add_parser("rename", help="rename files", usage="futil.py [-d] rename filetype newname [-p]")
-rename_parser.add_argument("filetype", type=str)
-rename_parser.add_argument("newname", type=str)
+rename_parser = subparsers.add_parser("rename", help="rename files", usage="futil.py [-d] rename [-h] filetype newname [-p]")
+rename_parser.add_argument("filetype", type=str, help="filetype of file(s) to rename")
+rename_parser.add_argument("newname", type=str, help="new name of file(s) to rename")
 rename_parser.add_argument("-p", "--placeholder", type=int, metavar="<int>", help='number of placeholder digits. default is 4, maximum is 10')
 
-create_parser = subparsers.add_parser("create", help="create files", usage="futil.py [-d] create [-t] filetype name amount")
+create_parser = subparsers.add_parser("create", help="create files", usage="futil.py [-d] create [-h] [-t] filetype name amount")
 create_parser.add_argument("filetype", type=str)
-create_parser.add_argument("name", type=str)
+create_parser.add_argument("name", type=str, help="name of file(s)")
 create_parser.add_argument("amount", type=int, help='number of files to create')
 create_parser.add_argument("-p", "--placeholder", type=int, metavar="<int>", help='number of placeholder digits. default is 4, maximum is 10')
 create_parser.add_argument("-t", "--template", type=str, metavar="<template file>", help="define a template file")
 
-remove_parser = subparsers.add_parser("remove", help="remove files", usage="futil.py [-d] remove filetype")
-remove_parser.add_argument("filetype", type=str)
+remove_parser = subparsers.add_parser("remove", help="remove files", usage="futil.py [-d] remove [-h]  filetype")
+remove_parser.add_argument("filetype", type=str, help="filetype of files to remove")
 
 if len(sys.argv) == 1: #if no args, print help message
     parser.print_help(sys.stderr)
@@ -45,6 +45,10 @@ if args.directory is not None: #check if path exists
 else:
     args.directory = os.getcwd()
     os.chdir(os.getcwd())
+
+#if args.command == 'rename' or args.command == 'create' or args.command == 'remove' and len(sys.argv == 2):
+#    parser.print_help(sys.stderr)
+#    exit(0)
 
 if args.command == 'rename' or args.command == 'create': #range checking
     if args.placeholder is None:
